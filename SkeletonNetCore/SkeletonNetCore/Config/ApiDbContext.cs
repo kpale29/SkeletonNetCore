@@ -1,10 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SkeletonNetCore.Models;
 
 namespace SkeletonNetCore.Config
 {
     public class ApiDbContext : DbContext
     {
-        public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options) {  }
+        public DbSet<ProductDTO> ProductDto { get; set; }
+        public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options)
+        {
+            
+        }
 
     }
 }

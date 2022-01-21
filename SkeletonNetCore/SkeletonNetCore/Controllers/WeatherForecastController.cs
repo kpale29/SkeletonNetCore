@@ -1,5 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SkeletonNetCore.Config;
+using SkeletonNetCore.DAO.Impl;
+using SkeletonNetCore.Models;
+using SkeletonNetCore.Services;
+using SkeletonNetCore.Services.Impl;
+using SkeletonNetCore.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,23 +23,30 @@ namespace SkeletonNetCore.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ProductSvc productSvc;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, ApiDbContext apiDbContext)
         {
             _logger = logger;
+            this.productSvc = new ProductSvcImpl(new ProductDaoImpl(apiDbContext));
+
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IEnumerable<Product>> Get()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            return await this.productSvc.getProducts();
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> Post(Product product)
+        {
+  
+            return Ok(await this.productSvc.saveProduct(product));
+            
         }
     }
 }
