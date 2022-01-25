@@ -8,5 +8,6 @@ namespace SkeletonNetCore.DAO
          public Task<int> Save(ProductDto product);
 
         public Task<List<ProductDto>>  GetAll();
+
     }
 }

@@ -16,7 +16,7 @@ namespace SkeletonNetCore.Controllers
     {
         private readonly ProductSvc productSvc;
 
-        public ProductsController(ApiDbContext apiDbContext){
+        public ProductsController(ApiDbContext apiDbContext) {
 
             productSvc = new ProductSvcImpl(new ProductDaoImpl(apiDbContext));
 
@@ -25,7 +25,7 @@ namespace SkeletonNetCore.Controllers
         [HttpGet]
         public async Task<List<Product>> Get()
         {
-             return await productSvc.getProducts();
+            return await productSvc.getProducts();
         }
 
         [HttpPost]
@@ -33,7 +33,12 @@ namespace SkeletonNetCore.Controllers
         {
 
             return Ok(await this.productSvc.saveProduct(product));
+        }
 
+        [HttpGet("[action]")]
+        public String Listar()
+        {
+            return "holis";
         }
     }
 }
