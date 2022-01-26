@@ -7,15 +7,15 @@ using SkeletonNetCore.Services.Models;
 
 namespace SkeletonNetCore.Services.Impl
 {
-    public class ProductSvcImpl : ProductSvc
+    public class ProductSvcImpl : ISvc<Product>
     {
-        public ProductDao product;
-        public ProductSvcImpl(ProductDao product)
+        public IDao<ProductDto> product;
+        public ProductSvcImpl(IDao<ProductDto> product)
         {
             this.product = product;
         }
 
-        public async Task<List<Product>> getProducts()
+        public async Task<List<Product>> getAll()
         {
             IEnumerable<ProductDto> products = await this.product.GetAll();
             return products.Select(product => new Product
@@ -23,14 +23,12 @@ namespace SkeletonNetCore.Services.Impl
                 id = product.id,
                 description = product.description,
                 img = product.img,
-                name = product.name, 
-                review  = product.review
-               
+                name = product.name,
+                review = product.review
             }).ToList();
-
         }
 
-        public async Task<int> saveProduct(Product product)
+        public async Task<int> save(Product product)
         {
             ProductDto newProduct = new ProductDto();
             newProduct.name = product.name;

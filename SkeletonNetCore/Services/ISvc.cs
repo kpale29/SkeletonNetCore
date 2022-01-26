@@ -4,9 +4,9 @@ using SkeletonNetCore.Services.Models;
 
 namespace SkeletonNetCore.Services
 {
-    public interface ProductSvc
+    public interface ISvc<T>
     {
-        public Task<int> saveProduct(Product product);
-        public Task<List<Product>> getProducts();    
+        public Task<int> save(T data);
+        public Task<List<T>> getAll();    
     }
 }

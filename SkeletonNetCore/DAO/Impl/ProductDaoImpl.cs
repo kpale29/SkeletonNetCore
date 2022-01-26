@@ -8,7 +8,7 @@ using SkeletonNetCore.Models;
 
 namespace SkeletonNetCore.DAO.Impl
 {
-    public class ProductDaoImpl : ProductDao
+    public class ProductDaoImpl : IDao<ProductDto>
     {
         ApiDbContext apiDbContext;
         public ProductDaoImpl(ApiDbContext _apiDbContext)
@@ -18,6 +18,7 @@ namespace SkeletonNetCore.DAO.Impl
 
         public async Task<List<ProductDto>> GetAll()
         {
+            //return await Task.FromResult(new List<ProductDto>());
             return await apiDbContext.Products.ToListAsync();
         }
 
