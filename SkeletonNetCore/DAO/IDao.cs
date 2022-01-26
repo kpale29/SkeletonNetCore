@@ -5,7 +5,7 @@ using SkeletonNetCore.Models;
 
 namespace SkeletonNetCore.DAO
 {
-    public interface ProductDao<T>
+    public interface IDao<T>
     {
         public Task<int> Save(T data);
         public Task<List<T>> GetAll();

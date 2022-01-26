@@ -18,8 +18,8 @@ namespace SkeletonNetCore.DAO.Impl
 
         public async Task<List<ProductDto>> GetAll()
         {
-            //return await Task.FromResult(new List<ProductDto>());
-            return await apiDbContext.Products.ToListAsync();
+            return await Task.FromResult(new List<ProductDto>());
+            //return await apiDbContext.Products.ToListAsync();
         }
 
         public async Task<int> Save(ProductDto user)
