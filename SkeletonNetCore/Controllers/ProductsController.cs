@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SkeletonNetCore.Config;
@@ -20,34 +22,33 @@ namespace SkeletonNetCore.Controllers
         {
             productSvc = new ProductSvcImpl(new ProductDaoImpl(apiDbContext));
         }
-        
-        [HttpGet]
-        public async Task<List<Product>> Get()
-        {
-            return await productSvc.getAll();
-        }
+
         /// <summary>
-        /// Creates a TodoItem.
+        /// Get all products
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns>A newly created TodoItem</returns>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     POST /Todo
-        ///     {
-        ///        "id": 1,
-        ///        "name": "Item #1",
-        ///        "isComplete": true
-        ///     }
-        ///
-        /// </remarks>
-        /// <response code="201">Returns the newly created item</response>
-        /// <response code="400">If the item is null</response>
+        /// <response code="200">Returns a list of Products</response>
+        /// <response code="500">Internal Server Error</response>
+        [HttpGet]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [Produces(MediaTypeNames.Application.Json)]
+        public async Task<List<Product>> Get([FromQuery] string search = "")
+        {
+            return await productSvc.getAll(search);
+        }
+
+        /// <summary>
+        /// Creates a Product.
+        /// </summary>
+        /// <returns>A newly created Product</returns>
+        /// <response code="201">Product created</response>
+        /// <response code="404">Bad request</response>
+        /// <response code="500">Internal Server Error</response>
         [HttpPost]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [Produces(MediaTypeNames.Application.Json)]
         public async Task<IActionResult> Post([FromBody] Product product)
         {
-            return Ok(await this.productSvc.save(product));
+            return Ok(await productSvc.save(product));
         }
     }
 }

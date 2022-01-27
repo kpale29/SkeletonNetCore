@@ -15,9 +15,9 @@ namespace SkeletonNetCore.Services.Impl
             this.product = product;
         }
 
-        public async Task<List<Product>> getAll()
+        public async Task<List<Product>> getAll(string searchQuery)
         {
-            IEnumerable<ProductDto> products = await this.product.GetAll();
+            IEnumerable<ProductDto> products = await product.GetAll();
             return products.Select(product => new Product
             {
                 id = product.id,
@@ -25,7 +25,7 @@ namespace SkeletonNetCore.Services.Impl
                 img = product.img,
                 name = product.name,
                 review = product.review
-            }).ToList();
+            }).Where(product => product.name.Contains(searchQuery)).ToList();
         }
 
         public async Task<int> save(Product product)

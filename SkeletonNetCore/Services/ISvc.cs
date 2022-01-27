@@ -7,6 +7,6 @@ namespace SkeletonNetCore.Services
     public interface ISvc<T>
     {
         public Task<int> save(T data);
-        public Task<List<T>> getAll();    
+        public Task<List<T>> getAll(string searchQuery);
     }
 }
