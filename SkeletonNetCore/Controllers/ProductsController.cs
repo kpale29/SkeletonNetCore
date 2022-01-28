@@ -13,7 +13,7 @@ using SkeletonNetCore.Services.Models;
 
 namespace SkeletonNetCore.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/products")]
     public class ProductsController : ControllerBase
     {
         private readonly ISvc<Product> productSvc;
