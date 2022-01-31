@@ -1,19 +1,13 @@
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SkeletonNetCore.Config;
-using SkeletonNetCore.DAO.Impl;
 using SkeletonNetCore.Services;
-using SkeletonNetCore.Services.Impl;
 using SkeletonNetCore.Services.Models;
 
 namespace SkeletonNetCore.Controllers
 {
-    [Route("api/products")]
+    [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
         private readonly ISvc<Product> productSvc;
