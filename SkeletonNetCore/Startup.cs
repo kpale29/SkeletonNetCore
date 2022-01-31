@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using SkeletonNetCore.Config;
+using SkeletonNetCore.DAO;
+using SkeletonNetCore.DAO.Impl;
+using SkeletonNetCore.Models;
+using SkeletonNetCore.Services;
+using SkeletonNetCore.Services.Impl;
+using SkeletonNetCore.Services.Models;
 
 namespace SkeletonNetCore
 {
@@ -31,10 +38,14 @@ namespace SkeletonNetCore
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
+            // Setting up routes to lowercase
+            services.AddRouting(options => options.LowercaseUrls = true);
+
+            // Dependency Injection
             services.AddDbContext<ApiDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("ConnectionStrings")));
-
+            services.AddTransient<ISvc<Product>, ProductSvcImpl>();
+            services.AddTransient<IDao<ProductDto>, ProductDaoImpl>();
             services.AddControllers();
-
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
@@ -75,8 +86,6 @@ namespace SkeletonNetCore
             app.UseRouting();
 
             app.UseAuthorization();
-
-            Console.WriteLine(env.EnvironmentName);
 
             app.UseEndpoints(endpoints =>
             {

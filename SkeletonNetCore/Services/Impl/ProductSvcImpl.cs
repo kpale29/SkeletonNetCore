@@ -9,23 +9,16 @@ namespace SkeletonNetCore.Services.Impl
 {
     public class ProductSvcImpl : ISvc<Product>
     {
-        public IDao<ProductDto> product;
-        public ProductSvcImpl(IDao<ProductDto> product)
+        public IDao<ProductDto> productDto;
+        public ProductSvcImpl(IDao<ProductDto> _productDto)
         {
-            this.product = product;
+            productDto = _productDto;
         }
 
         public async Task<List<Product>> getAll(string searchQuery)
         {
-            IEnumerable<ProductDto> products = await product.GetAll();
-            return products.Select(product => new Product
-            {
-                id = product.id,
-                description = product.description,
-                img = product.img,
-                name = product.name,
-                review = product.review
-            }).Where(product => product.name.Contains(searchQuery)).ToList();
+            IEnumerable<ProductDto> products = await productDto.GetAll();
+            return filterProductsBySearchQuery(products, searchQuery);
         }
 
         public async Task<int> save(Product product)
@@ -35,7 +28,19 @@ namespace SkeletonNetCore.Services.Impl
             newProduct.description = product.description;
             newProduct.img = product.img;
             newProduct.review = product.review;
-            return await this.product.Save(newProduct);
+            return await productDto.Save(newProduct);
+        }
+
+        public List<Product> filterProductsBySearchQuery(IEnumerable<ProductDto> productsDto, string searchQuery)
+        {
+            return productsDto.Select(product => new Product
+            {
+                id = product.id,
+                description = product.description,
+                img = product.img,
+                name = product.name,
+                review = product.review
+            }).Where(product => product.name.Contains(searchQuery)).ToList();
         }
     }
 }

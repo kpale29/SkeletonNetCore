@@ -18,9 +18,10 @@ namespace SkeletonNetCore.Controllers
     {
         private readonly ISvc<Product> productSvc;
 
-        public ProductsController(ApiDbContext apiDbContext)
+        public ProductsController(ISvc<Product> _productSvc)
         {
-            productSvc = new ProductSvcImpl(new ProductDaoImpl(apiDbContext));
+            //productSvc = new ProductSvcImpl(new ProductDaoImpl(apiDbContext));
+            productSvc = _productSvc;
         }
 
         /// <summary>
@@ -46,9 +47,9 @@ namespace SkeletonNetCore.Controllers
         [HttpPost]
         [Consumes(MediaTypeNames.Application.Json)]
         [Produces(MediaTypeNames.Application.Json)]
-        public async Task<IActionResult> Post([FromBody] Product product)
+        public async Task<int> Post([FromBody] Product product)
         {
-            return Ok(await productSvc.save(product));
+            return await productSvc.save(product);
         }
     }
 }
